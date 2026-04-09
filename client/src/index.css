@@ -1,0 +1,98 @@
+/* ===================================================
+   index.css — Global Styles for AI Fitness Planner
+   =================================================== */
+
+/* --- CSS Custom Properties (Design Tokens) --- */
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.07);
+
+  --accent-primary: #6c63ff;
+  --accent-secondary: #ff6584;
+  --accent-green: #43e97b;
+  --accent-blue: #38f9d7;
+
+  --gradient-hero: linear-gradient(135deg, #6c63ff 0%, #ff6584 100%);
+  --gradient-btn: linear-gradient(90deg, #6c63ff, #ff6584);
+  --gradient-btn-hover: linear-gradient(90deg, #5a52e0, #e0506e);
+  --gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+  --text-primary: #f0f0f8;
+  --text-secondary: #9090b0;
+  --text-muted: #55556e;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(108, 99, 255, 0.6);
+
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-btn: 0 4px 20px rgba(108, 99, 255, 0.4);
+  --shadow-btn-hover: 0 8px 30px rgba(108, 99, 255, 0.6);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --font: 'Outfit', sans-serif;
+  --transition: 0.3s ease;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* --- Background animated blobs --- */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(108, 99, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 8s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(255, 101, 132, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: blobFloat 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes blobFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(3%, 5%) scale(1.05); }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
