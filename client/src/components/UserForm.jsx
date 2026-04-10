@@ -25,6 +25,7 @@ function UserForm({ onBack }) {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [aiPlan, setAiPlan] = useState(null);
 
   // --- Handle input changes ---
   const handleChange = (e) => {
@@ -85,8 +86,8 @@ function UserForm({ onBack }) {
 
     setLoading(true);
     try {
-      // Send data to backend
-      await axios.post('http://localhost:5000/user', {
+      // Send data to backend and receive AI plan
+      const response = await axios.post('http://localhost:5000/analyze-user', {
         weight: Number(form.weight),
         height: Number(form.height),
         age: Number(form.age),
@@ -95,6 +96,11 @@ function UserForm({ onBack }) {
         equipment: form.equipment,
         time: Number(form.time),
       });
+
+      // Save the generated plan
+      if (response.data && response.data.aiPlan) {
+        setAiPlan(response.data.aiPlan);
+      }
 
       // Show success screen
       setSubmitted(true);
@@ -112,23 +118,62 @@ function UserForm({ onBack }) {
   if (submitted) {
     return (
       <main className="form-page">
-        <div className="form-card">
+        <div className="form-card" style={{ maxWidth: '600px' }}>
           <div className="success-card">
-            <span className="success-icon">🎉</span>
-            <h2 className="success-title">You're All Set!</h2>
+            <span className="success-icon" style={{ fontSize: '3rem', marginBottom: '10px', display: 'inline-block' }}>✨</span>
+            <h2 className="success-title">Your AI Workflow Plan is Ready!</h2>
             <p className="success-desc">
-              Your fitness profile has been saved. Phase 2 will use this data to generate
-              your personalized AI workout and diet plan.
+              Based on your profile, our AI engine generated the perfect tailored strategy for you.
             </p>
+            
+            {aiPlan && (
+              <div className="ai-plan-container" style={{
+                  background: 'linear-gradient(145deg, #1f2937, #111827)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  marginTop: '20px',
+                  marginBottom: '30px',
+                  color: '#fff',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  textAlign: 'left'
+              }}>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '12px', color: '#60a5fa' }}>⚡ AI Plan Details</h3>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px' }}>
+                    <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Difficulty</p>
+                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#fcd34d', textTransform: 'capitalize' }}>{aiPlan.difficulty}</p>
+                  </div>
+                  
+                  <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px' }}>
+                     <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Workout Type</p>
+                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#34d399', textTransform: 'capitalize' }}>{aiPlan.workoutType}</p>
+                  </div>
+
+                  <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px' }}>
+                     <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Training Mode</p>
+                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#f472b6', textTransform: 'uppercase' }}>{aiPlan.mode}</p>
+                  </div>
+
+                  <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px' }}>
+                     <p style={{ fontSize: '0.85rem', color: '#9ca3af', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Primary Focus</p>
+                    <p style={{ fontSize: '1.1rem', fontWeight: '600', color: '#a78bfa', textTransform: 'capitalize' }}>{aiPlan.focus.replace('_', ' ')}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <button
               className="btn-start-again"
               onClick={() => {
                 setForm(INITIAL_STATE);
                 setErrors({});
                 setSubmitted(false);
+                setAiPlan(null);
               }}
             >
-              Submit Another Profile
+              Start New Analysis
             </button>
           </div>
         </div>
