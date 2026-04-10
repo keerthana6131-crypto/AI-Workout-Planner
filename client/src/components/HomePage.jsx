@@ -1,6 +1,5 @@
 // components/HomePage.jsx - Landing page with hero section
 import './HomePage.css';
-
 const features = [
   { icon: '🏋️', label: 'Custom Workouts' },
   { icon: '🥗', label: 'Diet Plans' },
