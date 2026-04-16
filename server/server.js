@@ -1,36 +1,32 @@
-// server.js - Main Express application entry point
-require('dotenv').config(); // Load environment variables from .env
+// server.js — Main Express entry point
+require('dotenv').config();
 
 const express = require('express');
-const cors = require('cors');
+const cors    = require('cors');
 const connectDB = require('./db');
 const userRoutes = require('./routes/user');
 
 const app = express();
 
-// ----- Connect to MongoDB -----
+// ── Connect to MongoDB ──────────────────────────────────────────────────
 connectDB();
 
-// ----- Middleware -----
-// Enable CORS so the React frontend (localhost:5173) can call this API
+// ── Middleware ──────────────────────────────────────────────────────────
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
   methods: ['GET', 'POST'],
 }));
-
-// Parse incoming JSON request bodies
 app.use(express.json());
 
-// ----- Routes -----
-// Mount user routes at /user
+// ── Routes ──────────────────────────────────────────────────────────────
 app.use('/user', userRoutes);
 
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.json({ message: '🏋️ AI Fitness Planner API is running!' });
+// Health check
+app.get('/', (_req, res) => {
+  res.json({ message: '🏋️ AI Home Workout + Diet Planner API is running!' });
 });
 
-// ----- Start Server -----
+// ── Start Server ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
