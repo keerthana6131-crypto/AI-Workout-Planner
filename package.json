@@ -10,5 +10,8 @@
     "dev": "npx concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "author": "keerthana6131-crypto",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

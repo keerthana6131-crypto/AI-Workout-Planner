@@ -175,7 +175,6 @@ function UserForm({ onBack }) {
                     className={errors.goal ? 'error' : ''}
                   >
                     <option value="" disabled>Select goal...</option>
-                    {GOALS.map(g => <optioney key={g} value={g}>{g}</optioney>)}
                     {GOALS.map(g => <option key={g} value={g}>{g.charAt(0).toUpperCase() + g.slice(1)}</option>)}
                   </select>
                 </div>
